@@ -51,55 +51,5 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-    <script>
-
-        function addMessage(message) {
-            const list = $(".messages");
-            const leftRight = message.destination === 'server' ? 'left' : 'right';
-            list.append(`
-                <li class="message ${leftRight} appeared">
-                    <div class="avatar"></div>
-                    <div class="text_wrapper">
-                        <div class="text">${message.text}</div>
-                    </div>
-                </li>
-            `);
-        }
-
-        const socket = io('http://localhost:3000');
-        socket.on('connect', function() {
-            console.log(socket.id);
-        });
-        
-        socket.on('previousMessages', (data) => {
-            for(let message of data) {
-                addMessage(message);
-            }
-        });
-
-        socket.on('server', (message) => {
-            addMessage(message);
-        });
-
-
-        $("#btn_enviar").on('click', function() {
-            const text = $(".message_input").val();
-            if(text) {
-                socket.emit('client', text);
-                $(".message_input").val('');
-            }
-        });
-
-        $(".message_input").on('keydown', function(e) {
-            if(e.keyCode === 13) {
-                const text = $(this).val();
-                if(text) {
-                    socket.emit('client', text);
-                    $(".message_input").val('');
-                }   
-            }
-        });
-        
-    </script>
 </body>
 </html>
